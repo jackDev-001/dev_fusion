@@ -299,14 +299,14 @@ async function startServer() {
 
       if (!process.env.GEMINI_API_KEY) {
         return res.json({
-          text: `⚡ **Nexus AI Copilot**: I received your query: "${prompt}".\n\n*Note: GEMINI_API_KEY is currently running in local context mode.* Here is your workspace summary:\n- Active Sprint: Sprint 24 (42 points total, 28 done)\n- Open Tasks: ${tasks.length} tasks\n- High Risk Tasks: ${tasks.filter((t) => (t.aiRiskScore || 0) > 50).map((t) => t.code).join(', ') || 'None'}`,
+          text: `⚡ **Nexus Operations Engine**: I received your query: "${prompt}".\n\nWorkspace telemetry summary:\n- Active Sprint: Sprint 24 (42 points total, 28 done)\n- Open Tasks: ${tasks.length} tasks\n- High Risk Tasks: ${tasks.filter((t) => (t.aiRiskScore || 0) > 50).map((t) => t.code).join(', ') || 'None'}`,
           actionSuggestions: []
         });
       }
 
       // Context construction from live workspace data
       const contextSummary = `
-You are Nexus AI, the elite CTO Copilot for "${org.name}" workspace "${workspace.name}".
+You are Nexus Operations Hub, the automated engineering coordinator for "${org.name}" workspace "${workspace.name}".
 Current User: ${CURRENT_USER.name} (${CURRENT_USER.title})
 Team Members: ${members.map((m) => `${m.name} (${m.title}, capacity ${m.capacityHoursPerWeek}h/wk)`).join('; ')}
 Active Sprint: ${sprints[0]?.name} (Goal: ${sprints[0]?.goal})
@@ -318,12 +318,12 @@ Active Meetings: ${meetings.map((m) => m.title).join(', ')}
         model: 'gemini-3.6-flash',
         contents: prompt,
         config: {
-          systemInstruction: `${contextSummary}\nProvide concise, highly authoritative, actionable CTO level advice. Structure your response with bold key metrics, bullet points, and actionable next steps. Format with markdown.`
+          systemInstruction: `${contextSummary}\nProvide concise, highly authoritative, actionable engineering and sprint management advice. Structure your response with bold key metrics, bullet points, and actionable next steps. Format with markdown.`
         }
       });
 
       res.json({
-        text: response.text || 'AI Copilot processed your query successfully.'
+        text: response.text || 'Operations engine processed your query successfully.'
       });
     } catch (err: any) {
       console.error('Gemini Copilot Error:', err);
@@ -429,7 +429,7 @@ Active Meetings: ${meetings.map((m) => m.title).join(', ')}
         authorId: CURRENT_USER.id,
         category: category || 'Engineering',
         updatedAt: new Date().toISOString(),
-        tags: ['AI-Generated', category],
+        tags: ['Spec-Document', category],
         pinned: false
       };
 

@@ -9,7 +9,7 @@ import {
   Plus,
   ArrowUpRight,
   ShieldAlert,
-  Sparkles,
+  Sliders,
   Layers,
   FileText,
   Calendar,
@@ -73,7 +73,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1 font-semibold">
-            Core Platform Engineering Workspace • Active Sprint 24 Velocity & Risk Radar
+            Core Platform Engineering Workspace • Active Sprint 24 Velocity & Risk Monitor
           </p>
         </div>
 
@@ -90,8 +90,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             onClick={onOpenCopilot}
             className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black border border-slate-800 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>Ask AI Copilot</span>
+            <Sliders className="w-4 h-4 text-indigo-400" />
+            <span>Operations Hub</span>
           </button>
         </div>
       </div>
@@ -134,7 +134,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </p>
         </div>
 
-        {/* Metric 3: AI Predicted Risk Score */}
+        {/* Metric 3: Predicted Risk Score */}
         <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
             <span>Project Health & Risk</span>
@@ -171,18 +171,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* Main Command Grid: AI Risk Radar & Workload Heatmap */}
+      {/* Main Command Grid: Predictive Risk Engine & Workload Heatmap */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: AI Risk & Copilot Action Center */}
+        {/* Left 2 Cols: Risk Analysis & Operations Center */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-white text-slate-900 border border-indigo-200 shadow-xs relative overflow-hidden space-y-3">
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-slate-50 to-white text-slate-900 border border-indigo-200 shadow-xs relative overflow-hidden space-y-3">
             <div className="flex items-center justify-between border-b border-indigo-100 pb-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
-                  <Sparkles className="w-4 h-4" />
+                  <Sliders className="w-4 h-4" />
                 </div>
                 <h2 className="text-base font-black tracking-tight text-slate-900">
-                  Gemini Autonomous Project Risk Radar
+                  Predictive Project Risk & Health Engine
                 </h2>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-800 border border-amber-300">

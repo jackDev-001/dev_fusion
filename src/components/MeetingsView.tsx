@@ -3,12 +3,12 @@ import {
   Calendar,
   Video,
   Plus,
-  Sparkles,
   CheckCircle2,
   Clock,
   Users,
   FileText,
-  Zap
+  Zap,
+  Sliders
 } from 'lucide-react';
 import { Meeting, User } from '../types';
 
@@ -35,10 +35,10 @@ export const MeetingsView: React.FC<MeetingsViewProps> = ({
           </div>
           <div>
             <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-              Meetings & Google Calendar Sync
+              Meetings & Calendar Sync
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Integrated meeting notes, Zoom/Meet links, and AI Action Item Task Extractor
+              Integrated meeting notes, video conference links, and automated task extraction
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ export const MeetingsView: React.FC<MeetingsViewProps> = ({
           })}
         </div>
 
-        {/* Right Detail & AI Action Extractor */}
+        {/* Right Detail & Task Extractor */}
         <div className="md:col-span-7 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 overflow-y-auto space-y-6">
           {selectedMeeting ? (
             <>
@@ -103,7 +103,7 @@ export const MeetingsView: React.FC<MeetingsViewProps> = ({
                   className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-2 self-start sm:self-auto cursor-pointer"
                 >
                   <Video className="w-4 h-4" />
-                  <span>Join Google Meet</span>
+                  <span>Join Meeting</span>
                 </a>
               </div>
 
@@ -117,7 +117,7 @@ export const MeetingsView: React.FC<MeetingsViewProps> = ({
                 </p>
               </div>
 
-              {/* Action Items & AI Extractor */}
+              {/* Action Items & Extractor */}
               <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
@@ -129,7 +129,7 @@ export const MeetingsView: React.FC<MeetingsViewProps> = ({
                     className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
                   >
                     <Zap className="w-3.5 h-3.5 fill-current" />
-                    <span>Auto-Create Tasks via AI</span>
+                    <span>Extract Action Items to Sprint</span>
                   </button>
                 </div>
 

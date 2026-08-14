@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Sparkles,
+  Sliders,
   X,
   Send,
   Zap,
-  Bot,
+  Terminal,
   User as UserIcon,
   CheckCircle2,
   AlertTriangle
@@ -43,7 +43,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
     {
       id: 'm_1',
       sender: 'ai',
-      text: `Hello ${currentUser.name}! I am your **Nexus AI CTO Copilot** powered by Gemini. I have analyzed your workspace context:\n\n- **Sprint 24 Status**: 28/42 Story Points completed (66% velocity)\n- **Active Bottleneck**: Marcus Chen is assigned 3 tasks totaling 26 hours due in 48h.\n\nHow can I assist your engineering leadership today?`,
+      text: `Hello ${currentUser.name}! I am your **Nexus Operations & Workload Engine**. Telemetry summary for active workspace:\n\n- **Sprint 24 Status**: 28/42 Story Points completed (66% velocity)\n- **Active Bottleneck**: Marcus Chen is assigned 3 tasks totaling 26 hours due in 48h.\n\nHow can I assist your engineering operations today?`,
       timestamp: new Date().toISOString()
     }
   ]);
@@ -85,7 +85,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
         {
           id: `err_${Date.now()}`,
           sender: 'ai',
-          text: `⚠️ Error reaching Gemini AI Copilot service: ${err.message}`,
+          text: `⚠️ Error reaching operations service: ${err.message}`,
           timestamp: new Date().toISOString()
         }
       ]);
@@ -95,21 +95,21 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-slate-900 text-white shadow-2xl z-50 flex flex-col border-l border-indigo-500/30">
+    <div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-slate-900 text-white shadow-2xl z-50 flex flex-col border-l border-slate-700">
       {/* Header */}
-      <div className="p-4 bg-gradient-to-r from-purple-900/80 via-slate-900 to-indigo-900/80 border-b border-indigo-500/20 flex items-center justify-between shrink-0">
+      <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-purple-500 text-slate-950 flex items-center justify-center font-bold shadow-md">
-            <Sparkles className="w-4 h-4 fill-current" />
+          <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md">
+            <Sliders className="w-4 h-4" />
           </div>
           <div>
             <h2 className="text-sm font-black tracking-tight text-white flex items-center gap-1.5">
-              Nexus AI CTO Copilot
-              <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-purple-500/30 text-amber-300 border border-purple-400/30">
-                Gemini 3.6
+              Nexus Operations Hub
+              <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-indigo-500/30 text-indigo-300 border border-indigo-400/30">
+                Kernel v2.4
               </span>
             </h2>
-            <p className="text-[10px] text-slate-300">Live Workspace Context Aware</p>
+            <p className="text-[10px] text-slate-400">Live Workspace Telemetry & Risk Monitor</p>
           </div>
         </div>
 
@@ -127,7 +127,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
           <div className="flex items-center justify-between font-bold text-amber-300">
             <span className="flex items-center gap-1">
               <AlertTriangle className="w-3.5 h-3.5" />
-              Active AI Recommendation
+              Automated Recommendation
             </span>
           </div>
           <p className="text-[11px] text-slate-300 leading-snug">
@@ -154,8 +154,8 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
         {messages.map((m) => (
           <div key={m.id} className={`flex gap-2.5 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             {m.sender === 'ai' && (
-              <div className="w-7 h-7 rounded-lg bg-purple-600 text-amber-300 flex items-center justify-center shrink-0 shadow-xs mt-0.5">
-                <Bot className="w-4 h-4" />
+              <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+                <Terminal className="w-4 h-4" />
               </div>
             )}
 
@@ -173,8 +173,8 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
 
         {loading && (
           <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium italic">
-            <Sparkles className="w-4 h-4 animate-spin text-amber-400" />
-            <span>Gemini AI is analyzing workspace telemetry...</span>
+            <span className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></span>
+            <span>Analyzing workspace telemetry & sprint metrics...</span>
           </div>
         )}
       </div>
@@ -182,7 +182,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
       {/* Quick Suggestions Pills */}
       <div className="p-3 border-t border-slate-800 bg-slate-900/80 space-y-2 shrink-0">
         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-          Suggested CTO Queries
+          Suggested Queries
         </div>
         <div className="flex flex-wrap gap-1.5">
           {quickPrompts.map((p, idx) => (
@@ -201,7 +201,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
       <div className="p-3 bg-slate-950 border-t border-slate-800 flex items-center gap-2 shrink-0">
         <input
           type="text"
-          placeholder="Ask Gemini CTO Copilot anything..."
+          placeholder="Query sprint metrics, workload allocation, or risks..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -210,7 +210,7 @@ export const AICopilotDrawer: React.FC<AICopilotDrawerProps> = ({
         <button
           onClick={() => handleSend()}
           disabled={loading || !input.trim()}
-          className="p-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white disabled:opacity-50 transition-all cursor-pointer"
+          className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-50 transition-all cursor-pointer"
         >
           <Send className="w-4 h-4" />
         </button>

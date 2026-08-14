@@ -82,7 +82,7 @@ export const INITIAL_WORKSPACE: Workspace = {
   id: 'ws_1',
   orgId: 'org_1',
   name: 'Core Platform Engineering',
-  description: 'Primary workspace for distributed platform microservices and AI engine',
+  description: 'Primary workspace for distributed platform microservices and analytics engine',
   icon: '🚀'
 };
 
@@ -92,7 +92,7 @@ export const INITIAL_PROJECTS: Project[] = [
     workspaceId: 'ws_1',
     name: 'Nexus Cloud Infrastructure',
     key: 'NEX',
-    description: 'Next-gen distributed multi-tenant kernel, OAuth gateway & AI pipeline',
+    description: 'Next-gen distributed multi-tenant kernel, OAuth gateway & high-throughput pipeline',
     color: '#6366f1',
     leadId: 'usr_2',
     status: 'ON_TRACK',
@@ -102,14 +102,14 @@ export const INITIAL_PROJECTS: Project[] = [
   {
     id: 'proj_2',
     workspaceId: 'ws_1',
-    name: 'Omni AI Assistant & Copilot',
-    key: 'AI',
-    description: 'Autonomous project risk prediction, sprint velocity auto-balancing & summarization',
+    name: 'Telemetry & Workload Engine',
+    key: 'SYS',
+    description: 'Predictive project risk analysis, sprint velocity balancing & automated reporting',
     color: '#8b5cf6',
     leadId: 'usr_1',
     status: 'AT_RISK',
     healthScore: 68,
-    category: 'AI / Data'
+    category: 'Infrastructure'
   },
   {
     id: 'proj_3',
@@ -130,7 +130,7 @@ export const INITIAL_SPRINTS: Sprint[] = [
     id: 'sprint_24',
     projectId: 'proj_1',
     name: 'Sprint 24 — High-Velocity Kernel',
-    goal: 'Deploy multi-tenant security barrier, rate-limiting middleware & AICopilot v2',
+    goal: 'Deploy multi-tenant security barrier, rate-limiting middleware & Operations Engine v2',
     startDate: '2026-08-01',
     endDate: '2026-08-15',
     status: 'ACTIVE',
@@ -185,9 +185,9 @@ export const INITIAL_TASKS: Task[] = [
   },
   {
     id: 'task_2',
-    code: 'AI-204',
-    title: 'Train Gemini Project Health & Risk Predictor Endpoint',
-    description: 'Build backend API route `/api/ai/risk-analysis` using `@google/genai` to analyze task velocity, missing estimates, and imminent blockages.',
+    code: 'SYS-204',
+    title: 'Deploy Project Health & Workload Telemetry Endpoint',
+    description: 'Build backend API route `/api/analytics/risk-analysis` to evaluate task velocity, missing estimates, and imminent blockages.',
     status: 'IN_PROGRESS',
     priority: 'HIGH',
     projectId: 'proj_2',
@@ -198,14 +198,14 @@ export const INITIAL_TASKS: Task[] = [
     estimatedHours: 24,
     loggedHours: 18,
     dueDate: '2026-08-15',
-    tags: ['AI', 'Gemini', 'Predictive-Analytics'],
+    tags: ['Backend', 'Telemetry', 'Predictive-Analytics'],
     subtasks: [
       { id: 'sub_4', title: 'Construct workspace context serializer', completed: true, assigneeId: 'usr_2' },
-      { id: 'sub_5', title: 'Integrate gemini-3.6-flash structured JSON response', completed: true, assigneeId: 'usr_2' },
+      { id: 'sub_5', title: 'Implement structured telemetry metrics calculator', completed: true, assigneeId: 'usr_2' },
       { id: 'sub_6', title: 'Add real-time action recommendation executor', completed: false, assigneeId: 'usr_2' }
     ],
     comments: [
-      { id: 'cm_2', authorId: 'usr_2', content: 'Gemini model is producing instant risk scoring and actionable mitigation steps!', createdAt: '2026-08-12T11:45:00Z' }
+      { id: 'cm_2', authorId: 'usr_2', content: 'Workload analyzer is producing instant risk scoring and actionable mitigation steps!', createdAt: '2026-08-12T11:45:00Z' }
     ],
     attachments: [],
     aiRiskScore: 35,
@@ -269,8 +269,8 @@ export const INITIAL_TASKS: Task[] = [
   },
   {
     id: 'task_5',
-    code: 'AI-208',
-    title: 'Implement Notion-like Wiki Docs & AI Auto-Documenter',
+    code: 'DOC-208',
+    title: 'Implement Markdown Wiki Docs & Spec Template Builder',
     description: 'Allow team members to generate complete technical documentation, release notes, and architecture guides from workspace task history.',
     status: 'IN_REVIEW',
     priority: 'HIGH',
@@ -282,13 +282,13 @@ export const INITIAL_TASKS: Task[] = [
     estimatedHours: 14,
     loggedHours: 14,
     dueDate: '2026-08-13',
-    tags: ['Docs', 'AI', 'Notion-Wiki'],
+    tags: ['Docs', 'Markdown', 'Technical-Specs'],
     subtasks: [
       { id: 'sub_11', title: 'Rich markdown editor with block structure', completed: true, assigneeId: 'usr_4' },
-      { id: 'sub_12', title: 'AI doc generation prompt pipeline', completed: true, assigneeId: 'usr_4' }
+      { id: 'sub_12', title: 'Standard spec template generator', completed: true, assigneeId: 'usr_4' }
     ],
     comments: [
-      { id: 'cm_3', authorId: 'usr_4', content: 'Submitted PR for code review! Tested doc generation on 5 past sprints.', createdAt: '2026-08-13T08:30:00Z' }
+      { id: 'cm_3', authorId: 'usr_4', content: 'Submitted PR for code review! Tested spec template generator on 5 past sprints.', createdAt: '2026-08-13T08:30:00Z' }
     ],
     attachments: [],
     aiRiskScore: 12,
@@ -333,11 +333,11 @@ Nexus Workspace is designed as a high-concurrency, multi-tenant enterprise opera
 
 ### Key Pillars
 1. **Strict Tenant Isolation**: Row-level tenant identification on all database queries.
-2. **Unified Intelligence**: Server-side Gemini AI engine analyzing sprints, risks, and pull requests in real time.
-3. **Sub-second Collaboration**: Integrated Slack-like channels, Notion-like docs, Jira-like board, and Google Calendar sync.
+2. **Predictive Workload Engine**: Real-time telemetry analyzer evaluating sprints, risks, and resource allocations.
+3. **Sub-second Collaboration**: Integrated channels, structured markdown docs, agile Kanban board, and calendar synchronization.
 
 \`\`\`
-Client UI (React + Tailwind) <--> Rest API Gateway <--> Express + Server Gemini AI <--> Multi-Tenant Data Store
+Client UI (React + Tailwind) <--> REST API Gateway <--> Express Backend Services <--> Multi-Tenant Data Store
 \`\`\`
 `,
     authorId: 'usr_2',
@@ -355,11 +355,11 @@ Client UI (React + Tailwind) <--> Rest API Gateway <--> Express + Server Gemini 
 ### Accomplishments
 * 28 / 42 Story Points Completed
 * Zero security vulnerabilities found in multi-tenant audit
-* AI Risk engine successfully flagged 2 resource over-allocations
+* Workload analyzer flagged 2 resource over-allocations and suggested rebalancing
 
 ### Next Steps
 1. Finalize GitHub webhook sync for NEX-105
-2. Deploy v2.4 image container to Cloud Run
+2. Deploy v2.4 image container to production
 `,
     authorId: 'usr_4',
     category: 'Engineering',
@@ -373,17 +373,17 @@ export const INITIAL_MEETINGS: Meeting[] = [
   {
     id: 'meet_1',
     workspaceId: 'ws_1',
-    title: 'Weekly Engineering Architecture Sync & AI Health Review',
+    title: 'Weekly Engineering Architecture Sync & Health Review',
     startTime: '2026-08-13T10:00:00Z',
     endTime: '2026-08-13T10:45:00Z',
     organizerId: 'usr_1',
     attendeeIds: ['usr_1', 'usr_2', 'usr_3', 'usr_4'],
     meetUrl: 'https://meet.nexus.inc/arch-sync',
-    notes: 'Discussed row-level isolation benchmark, sprint 24 risk prediction, and AI Copilot automated task dispatch.',
+    notes: 'Discussed row-level isolation benchmark, sprint 24 risk metrics, and automated task extraction.',
     summary: 'The team agreed on strict RBAC enforcement for Organization boundaries and prioritized Marcus’s workload mitigation.',
     actionItems: [
       'Marcus: Reassign NEX-105 subtask 2 or request assistance',
-      'Elena: Deploy Gemini risk scoring endpoint to production',
+      'Elena: Deploy workload telemetry endpoint to production',
       'Alex: Finalize SOC2 audit log schema'
     ],
     status: 'UPCOMING'
@@ -405,7 +405,7 @@ export const INITIAL_MEETINGS: Meeting[] = [
 export const INITIAL_CHANNELS: ChatChannel[] = [
   { id: 'ch_1', workspaceId: 'ws_1', name: 'general-announcements', type: 'PUBLIC', topic: 'Company-wide updates & platform releases', membersCount: 24 },
   { id: 'ch_2', workspaceId: 'ws_1', name: 'proj-nexus-kernel', type: 'PUBLIC', topic: 'Core infrastructure & security discussions', membersCount: 12 },
-  { id: 'ch_3', workspaceId: 'ws_1', name: 'ai-copilot-dev', type: 'PUBLIC', topic: 'Gemini integration & risk model tuning', membersCount: 8 },
+  { id: 'ch_3', workspaceId: 'ws_1', name: 'sprint-automation', type: 'PUBLIC', topic: 'Sprint telemetry & automation tuning', membersCount: 8 },
   { id: 'ch_4', workspaceId: 'ws_1', name: 'incidents-war-room', type: 'PRIVATE', topic: 'Production alerts & rapid response', membersCount: 6 }
 ];
 
@@ -428,14 +428,14 @@ export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
     id: 'msg_3',
     channelId: 'ch_3',
     senderId: 'usr_1',
-    content: '@NexusAI Can you run an automated risk assessment on Sprint 24?',
+    content: '@NexusBot Can you run an automated risk assessment on Sprint 24?',
     timestamp: '2026-08-13T08:40:00Z'
   },
   {
     id: 'msg_4',
     channelId: 'ch_3',
     senderId: 'ai_bot',
-    content: '⚡ **Nexus AI Risk Report for Sprint 24**:\n- **Overall Sprint Health**: 78/100 (At Moderate Risk)\n- **Resource Bottleneck Detected**: Marcus Chen has 3 active tasks totaling 26 planned hours due in 48h.\n- **Recommended Action**: Reassign task `NEX-105` (GitHub Webhooks) to Elena Rostova or extend target date to Aug 18.',
+    content: '⚡ **Nexus Operations Risk Report for Sprint 24**:\n- **Overall Sprint Health**: 78/100 (At Moderate Risk)\n- **Resource Bottleneck Detected**: Marcus Chen has 3 active tasks totaling 26 planned hours due in 48h.\n- **Recommended Action**: Reassign task `NEX-105` (GitHub Webhooks) to Elena Rostova or extend target date to Aug 18.',
     timestamp: '2026-08-13T08:40:05Z',
     isAiResponse: true
   }
@@ -445,7 +445,7 @@ export const INITIAL_NOTIFICATIONS: Notification[] = [
   {
     id: 'notif_1',
     userId: 'usr_1',
-    title: 'AI Risk Alert — Marcus Chen Overallocated',
+    title: 'Risk Alert — Marcus Chen Overallocated',
     message: 'Sprint 24 velocity indicates high risk of missing NEX-105 deadline due to developer overload.',
     type: 'RISK_ALERT',
     read: false,
@@ -456,7 +456,7 @@ export const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 'notif_2',
     userId: 'usr_1',
     title: 'Pull Request Review Requested',
-    message: 'Sarah Jenkins requested your review on "AI Notion Docs Generator (AI-208)"',
+    message: 'Sarah Jenkins requested your review on "Markdown Docs & Spec Builder (DOC-208)"',
     type: 'TASK_ASSIGNED',
     read: false,
     createdAt: '2026-08-13T08:30:00Z',
@@ -466,7 +466,7 @@ export const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 'notif_3',
     userId: 'usr_1',
     title: 'Upcoming Meeting in 15 mins',
-    message: 'Weekly Engineering Architecture Sync & AI Health Review starts at 10:00 AM.',
+    message: 'Weekly Engineering Architecture Sync & Health Review starts at 10:00 AM.',
     type: 'MEETING_REMINDER',
     read: true,
     createdAt: '2026-08-13T09:45:00Z',
@@ -477,7 +477,7 @@ export const INITIAL_NOTIFICATIONS: Notification[] = [
 export const INITIAL_AUDIT_LOGS: AuditLog[] = [
   { id: 'aud_1', actorName: 'Alex Vance', action: 'ORGANIZATION_POLICY_UPDATE', target: 'Enforced Multi-Factor Authentication', timestamp: '2026-08-12T16:00:00Z', ipAddress: '192.168.1.102' },
   { id: 'aud_2', actorName: 'Elena Rostova', action: 'ROLE_PROMOTION', target: 'Marcus Chen promoted to Senior Developer', timestamp: '2026-08-11T12:30:00Z', ipAddress: '192.168.1.108' },
-  { id: 'aud_3', actorName: 'System Kernel', action: 'AI_RISK_SWEEP_EXECUTED', target: 'Scanned 6 active workspace projects', timestamp: '2026-08-13T08:00:00Z', ipAddress: '127.0.0.1' }
+  { id: 'aud_3', actorName: 'System Kernel', action: 'RISK_SWEEP_EXECUTED', target: 'Scanned 6 active workspace projects', timestamp: '2026-08-13T08:00:00Z', ipAddress: '127.0.0.1' }
 ];
 
 export const INITIAL_ANALYTICS: WorkspaceAnalytics = {
@@ -509,17 +509,17 @@ export const INITIAL_AI_INSIGHTS: AICopilotInsight[] = [
     title: 'Meeting Notes Ready for Task Extraction',
     type: 'ACTION',
     severity: 'MEDIUM',
-    description: 'Architecture sync meeting contains 3 unassigned action items. AI can parse and convert them into structured backlog tasks.',
+    description: 'Architecture sync meeting contains 3 unassigned action items. Convert them into structured backlog tasks.',
     actionLabel: 'Extract 3 Action Tasks',
     actionPayload: { meetingId: 'meet_1' }
   },
   {
     id: 'ins_3',
-    title: 'Documentation Outdated for Project AI-Copilot',
+    title: 'Documentation Outdated for Project NEX',
     type: 'OPTIMIZATION',
     severity: 'LOW',
-    description: 'Project NEX has had 4 closed PRs since last architecture wiki update. Auto-generate documentation update.',
-    actionLabel: 'Generate Architecture Doc',
-    actionPayload: { projectId: 'proj_2' }
+    description: 'Project NEX has had 4 closed PRs since last architecture wiki update. Generate documentation update.',
+    actionLabel: 'Generate Architecture Spec',
+    actionPayload: { projectId: 'proj_1' }
   }
 ];

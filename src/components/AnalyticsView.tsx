@@ -30,7 +30,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ analytics, members
               Velocity, Workload & Risk Analytics
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Executive dashboard powered by real-time telemetry and Gemini Predictive Risk Engine
+              Executive dashboard powered by real-time workspace telemetry and predictive risk analytics
             </p>
           </div>
         </div>

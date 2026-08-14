@@ -1,6 +1,6 @@
 {
   "name": "Nexus Workspace",
-  "description": "Unified Enterprise Project Management, Collaboration & AI Command Center",
+  "description": "Unified Enterprise Project Management, Agile Collaboration & Engineering Operations Platform",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

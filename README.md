@@ -1,26 +1,27 @@
 # Nexus Workspace (Nexus OS)
-> **Unified Enterprise Project Management, Collaboration & AI Autonomous Command Center**
+> **Unified Enterprise Project Management, Agile Collaboration & Operations Platform**
 
 [![Live App](https://img.shields.io/badge/Live%20Demo-Google%20Cloud%20Run-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ais-pre-sw6yp4kyomy3lpijro67cx-903624546103.asia-east1.run.app)
 [![Built with React](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TailwindCSS%20v4-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Powered by Gemini](https://img.shields.io/badge/AI%20Engine-Google%20Gemini%203.6%20Flash-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
 ---
 
 ## 📌 Problem Statement & Motivation
 
 ### Chosen Track / Problem Statement:
-**Next-Generation Enterprise Collaboration & Autonomous Project Management OS**
+**Next-Generation Enterprise Collaboration & Unified Project Management OS**
 
 Modern engineering and product teams suffer from severe tool fragmentation:
-- **Jira / Linear** for issue tracking
-- **Notion / Confluence** for documentation
-- **Slack / Teams** for communications
-- **Google Meet / Zoom** for meeting notes
+- **Jira / Linear** for issue tracking and backlog management
+- **Notion / Confluence** for technical documentation and wiki pages
+- **Slack / Teams** for real-time team communication
+- **Google Meet / Zoom** for meeting notes and sync agendas
 
-Context-switching across 4–5 disconnected tools leads to missed action items, unmonitored sprint bottlenecks, overloaded engineers, and delayed delivery. 
+Context-switching across 4–5 disconnected tools leads to missed action items, unmonitored sprint bottlenecks, overloaded engineers, and delayed delivery cycles. 
 
-**Nexus Workspace** solves this by consolidating sprint planning, agile Kanban tracking, technical documentation, meeting summaries, and real-time team chat into a **single unified operating system**, powered by an autonomous **Gemini AI CTO Copilot** that proactively monitors project health, predicts delivery risks, and auto-balances team workloads.
+**Nexus Workspace** solves this by consolidating sprint planning, agile Kanban tracking, technical documentation, meeting summaries, and real-time team communication into a **single unified operating system**, complete with an automated **Operations & Workload Telemetry Engine** that proactively monitors project health, predicts delivery bottlenecks, and auto-balances team allocations.
 
 ---
 
@@ -30,10 +31,10 @@ Nexus Workspace functions as an all-in-one executive command center and engineer
 
 1. **Executive Command Center:** Real-time visibility into active sprint velocity, delivery burn-down, project health scores, and dynamic developer capacity heatmaps.
 2. **Agile Kanban Board:** Interactive sprint board supporting live status transitions (`Backlog`, `To Do`, `In Progress`, `In Review`, `Done`), story points, subtask checklists, and priority indicators.
-3. **Gemini AI Risk Radar:** Proactively calculates risk scores (0–100%) on every task based on developer workload, estimate accuracy, and approaching deadlines. Features 1-click automatic workload rebalancing.
-4. **Notion-Style Wiki & AI Auto-Documenter:** Rich markdown knowledge base where teams can draft technical specifications or use Gemini AI to generate production-ready architectural documentation, SLA guidelines, and code templates in seconds.
-5. **Meeting Intelligence Hub:** Captures meeting transcripts and converts discussions into actionable sprint tasks with a single click.
-6. **Integrated Team Chat:** Multi-channel real-time discussion spaces (`#general`, `#engineering`, `#product-design`, `#incidents`) with AI assistant integration.
+3. **Predictive Risk & Health Engine:** Proactively calculates risk scores (0–100%) on every task based on developer workload, estimate accuracy, and approaching deadlines, featuring 1-click automatic workload rebalancing.
+4. **Technical Wiki & Documentation Builder:** Rich markdown knowledge base where teams can draft technical specifications, architecture blueprints, SLA guidelines, and structured code templates.
+5. **Meeting Intelligence Hub:** Captures meeting transcripts and converts discussions into actionable sprint backlog tasks with a single click.
+6. **Integrated Team Chat:** Multi-channel real-time discussion spaces (`#general-announcements`, `#proj-nexus-kernel`, `#sprint-automation`, `#incidents-war-room`) with automated operations bot assistance.
 7. **Security & Audit Trail:** Real-time immutable audit logging for enterprise governance and compliance tracking.
 
 ---
@@ -55,10 +56,9 @@ Nexus Workspace functions as an all-in-one executive command center and engineer
 ### Database & Storage
 - **State Engine:** Server-authoritative in-memory REST state store with real-time state synchronization and automated audit trail tracking
 
-### AI & Third-Party APIs
-- **AI SDK:** `@google/genai` (Google Gen AI TypeScript SDK)
-- **Model:** `gemini-3.6-flash` (used for autonomous copilot queries, risk scoring, sprint task generation, and technical documentation drafting)
-- **Deployment Platform:** Google Cloud Run (Containerized environment)
+### Deployment & Infrastructure
+- **Containerization:** Production Docker runtime
+- **Hosting Platform:** Google Cloud Run (Serverless container deployment)
 
 ---
 
@@ -67,7 +67,6 @@ Nexus Workspace functions as an all-in-one executive command center and engineer
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (version 18.0.0 or higher recommended)
 - [npm](https://www.npmjs.com/) (version 9.0.0 or higher)
-- A [Google Gemini API Key](https://aistudio.google.com/) *(optional — fallback heuristic mode is built-in if no key is provided)*
 
 ### 1. Clone the Repository
 ```bash
@@ -80,23 +79,13 @@ cd nexus-workspace
 npm install
 ```
 
-### 3. Configure Environment Variables
-Create a `.env` file in the root directory by copying `.env.example`:
-```bash
-cp .env.example .env
-```
-Inside `.env`, configure your API key:
-```env
-GEMINI_API_KEY="your_actual_gemini_api_key_here"
-```
-
-### 4. Start the Development Server
+### 3. Start the Development Server
 ```bash
 npm run dev
 ```
 The server will start at: **`http://localhost:3000`**
 
-### 5. Build for Production (Optional)
+### 4. Build for Production
 ```bash
 # Compile frontend with Vite and bundle backend with esbuild
 npm run build
@@ -113,11 +102,11 @@ npm start
 | :--- | :--- |
 | **Executive Command Center** | Live velocity gauges, 66% sprint completion indicators, critical bottleneck alerts, real-time workload allocation heatmaps (hours allocated vs. weekly capacity), and live security audit log streams. |
 | **Agile Kanban Board** | Multi-column agile board (`Backlog` → `Done`), priority tags (`URGENT`, `HIGH`, `MEDIUM`, `LOW`), project & assignee filter dropdowns, subtask completion trackers, and detailed task modal. |
-| **AI CTO Copilot & Risk Radar** | Gemini-driven autonomous assistant that evaluates delivery risks, diagnoses team overload, suggests sprint task decompositions, and provides actionable recommendations. |
-| **1-Click AI Workload Rebalance** | Automated detection of developer bottlenecks (e.g., Marcus Chen overloaded) with a 1-click action button that reassigns tasks and updates the audit log. |
-| **Notion-Style Wiki Docs** | Categorized markdown viewer/editor with pinned articles, tags, and an **AI Auto-Documenter** modal that drafts full technical architectural specs. |
-| **Meeting Intelligence** | Meeting minutes repository with 1-click **"Extract Action Items to Sprint"** feature that auto-generates structured task cards. |
-| **Team Chat & Channels** | Topic channels (`#engineering`, `#product-design`, `#incidents`) with real-time message sending and AI bot mentions. |
+| **Operations Engine & Risk Radar** | Workload telemetry analyzer that evaluates delivery risks, diagnoses team overload, calculates story point budgets, and provides actionable recommendations. |
+| **1-Click Workload Rebalancer** | Automated detection of developer bottlenecks (e.g., developer overallocated) with a 1-click action button that reassigns tasks and updates the audit log. |
+| **Wiki Docs & Spec Builder** | Categorized markdown viewer/editor with pinned articles, tags, and a technical specification generator that drafts full architectural documentation. |
+| **Meeting Intelligence** | Meeting minutes repository with 1-click **"Extract Action Items to Sprint"** feature that auto-generates structured task cards into the sprint backlog. |
+| **Team Chat & Channels** | Topic channels (`#general-announcements`, `#proj-nexus-kernel`, `#sprint-automation`, `#incidents-war-room`) with real-time messaging and operations bot commands. |
 | **Global Quick Search (⌘K)** | Global fuzzy search modal accessible via `⌘K` or the top search bar across all tasks, docs, and channels. |
 | **Enterprise Security & Roles** | Multi-role user model (`OWNER`, `ADMIN`, `MEMBER`), department categorization, and complete immutable audit trail. |
 
@@ -134,17 +123,18 @@ npm start
 
 | Member Name | Project Role | Responsibilities |
 | :--- | :--- | :--- |
-| **Aniket Vadhiya** | **Project Lead & Full Stack Architect (Owner / CTO)** | System design, full-stack Express & React architecture, Gemini AI integration, UI/UX polish. |
-| **Akshita Patel** | **Product Architect & UX Lead** | Product requirement definition, user workflow mapping, Kanban sprint board UX design. |
-| **Vinayak Gautam** | **Backend & AI Systems Engineer** | REST API endpoints, autonomous risk prediction engine, server-side data models. |
-| **Meet** | **Principal Frontend Engineer** | Interactive UI components, Bento grid responsive layouts, Motion animations, theme design. |
-| **Jeet** | **Lead Infrastructure & DevOps Engineer** | Cloud Run deployment, container optimization, build automation, security & audit logs. |
+| **Aniket Vadhiya** | **Project Lead & Full Stack Architect (Owner / CTO)** | Overall architecture, full-stack Express & React implementation, telemetry algorithms, and UI/UX design. |
+| **Akshita Patel** | **Product Architect & UX Lead** | Product requirement definition, user workflow mapping, Kanban sprint board UX design, and backlog workflows. |
+| **Vinayak Gautam** | **Backend & Systems Engineer** | REST API endpoints, automated risk & workload calculation logic, and server-side data models. |
+| **Meet** | **Principal Frontend Engineer** | Interactive UI components, Bento grid responsive layouts, Motion animations, and theme polish. |
+| **Jeet** | **Lead Infrastructure & DevOps Engineer** | Cloud Run deployment, container optimization, build pipelines, security policies, and audit logging. |
 
 ---
 
 ## 🔍 Known Bugs & Limitations (Honest Transparency)
 
-1. **In-Memory State Persistence:** The application currently maintains state in a server-side in-memory store for instant responsiveness during demonstrations. If the cloud container completely restarts or cold-boots, modifications reset back to the baseline mock state (can be easily connected to persistent Cloud Firestore or PostgreSQL / Cloud SQL).
+1. **In-Memory State Persistence:** The application currently maintains state in a server-side in-memory store for instant responsiveness during demonstrations. If the cloud container completely restarts or cold-boots, modifications reset back to the baseline initial state (can be easily connected to persistent Cloud Firestore or PostgreSQL / Cloud SQL).
 2. **Simulated File Attachments:** Task and Wiki attachment upload dialogs simulate file attachments locally within the application state; an external object storage service (such as Google Cloud Storage or AWS S3) is not hooked up for raw binary persistence.
 3. **Polling / Optimistic State vs. WebSockets:** Real-time updates between team views use optimistic client-server REST synchronization rather than a full dedicated WebSocket/SSE daemon.
-4. **AI Key Fallback Mode:** In environments where `GEMINI_API_KEY` is not provided, the system gracefully falls back to deterministic local intelligence heuristics so that the user interface never crashes or blocks.
+4. **Local Network Port Binding:** In local environments, the backend dev server binds to port 3000 as configured for full-stack Node environments.
+

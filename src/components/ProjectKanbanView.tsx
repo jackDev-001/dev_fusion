@@ -82,7 +82,7 @@ export const ProjectKanbanView: React.FC<ProjectKanbanViewProps> = ({
               Agile Kanban & Sprint Board
             </h1>
             <p className="text-xs text-slate-500 font-semibold">
-              Sprint 24 • Real-time status transitions & Gemini Risk Evaluation
+              Sprint 24 • Real-time status transitions & automated risk evaluation
             </p>
           </div>
         </div>
@@ -278,12 +278,12 @@ export const ProjectKanbanView: React.FC<ProjectKanbanViewProps> = ({
                 </p>
               </div>
 
-              {/* AI Risk Breakdown Banner */}
+              {/* Risk Breakdown Banner */}
               {selectedTask.aiRiskScore && selectedTask.aiRiskScore > 30 && (
                 <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs space-y-1">
                   <div className="flex items-center gap-1.5 font-bold">
                     <Zap className="w-4 h-4 text-amber-500" />
-                    <span>Gemini Risk Evaluation ({selectedTask.aiRiskScore}% Risk)</span>
+                    <span>Risk & Capacity Assessment ({selectedTask.aiRiskScore}% Risk)</span>
                   </div>
                   <p className="text-[11px] leading-snug">{selectedTask.aiRiskReasoning}</p>
                 </div>

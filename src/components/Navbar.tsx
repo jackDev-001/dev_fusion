@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Search,
   Bell,
-  Sparkles,
+  Sliders,
   Plus,
   Building2,
   ChevronDown,
@@ -104,17 +104,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>New Task</span>
         </button>
 
-        {/* AI Copilot Button with Gradient Glow */}
+        {/* Operations Hub Button */}
         <button
           onClick={onOpenCopilot}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white text-xs font-bold shadow-xs hover:shadow-indigo-500/25 transition-all cursor-pointer relative group"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-          <span className="hidden sm:inline">AI Copilot</span>
-          <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
-          </span>
+          <Sliders className="w-3.5 h-3.5 text-indigo-400" />
+          <span className="hidden sm:inline">Operations Hub</span>
         </button>
 
         {/* Notifications Popover Trigger */}

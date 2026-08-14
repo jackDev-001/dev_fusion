@@ -4,9 +4,8 @@ import {
   Hash,
   Lock,
   Send,
-  Sparkles,
   Users,
-  Bot
+  Terminal
 } from 'lucide-react';
 import { ChatChannel, ChatMessage, User } from '../types';
 import { UserAvatar } from './UserAvatar';
@@ -48,10 +47,10 @@ export const TeamChatView: React.FC<TeamChatViewProps> = ({
           </div>
           <div>
             <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-              Slack-style Team Collaboration
+              Team Chat & Collaboration
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Channels, thread discussions, and integrated AI Bot (@NexusAI)
+              Channels, thread discussions, and integrated workspace bot (@NexusBot)
             </p>
           </div>
         </div>
@@ -114,8 +113,8 @@ export const TeamChatView: React.FC<TeamChatViewProps> = ({
               return (
                 <div key={msg.id} className="flex gap-3 text-xs group">
                   {isAi ? (
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-amber-300 flex items-center justify-center font-bold shrink-0 shadow-xs">
-                      <Bot className="w-4 h-4" />
+                    <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
+                      <Terminal className="w-4 h-4" />
                     </div>
                   ) : (
                     <UserAvatar
@@ -126,8 +125,8 @@ export const TeamChatView: React.FC<TeamChatViewProps> = ({
 
                   <div className="space-y-1 max-w-2xl">
                     <div className="flex items-center gap-2">
-                      <span className={`font-bold ${isAi ? 'text-purple-600 dark:text-purple-400' : 'text-slate-900 dark:text-white'}`}>
-                        {isAi ? 'Nexus AI Assistant' : sender?.name}
+                      <span className={`font-bold ${isAi ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-900 dark:text-white'}`}>
+                        {isAi ? 'NexusBot' : sender?.name}
                       </span>
                       <span className="text-[10px] text-slate-400 font-mono">
                         {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -137,7 +136,7 @@ export const TeamChatView: React.FC<TeamChatViewProps> = ({
                     <div
                       className={`p-3 rounded-2xl leading-relaxed ${
                         isAi
-                          ? 'bg-purple-950/20 border border-purple-500/30 text-purple-900 dark:text-purple-200 font-medium whitespace-pre-wrap'
+                          ? 'bg-indigo-50 border border-indigo-200 text-slate-800 font-medium whitespace-pre-wrap'
                           : 'bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200'
                       }`}
                     >
@@ -153,7 +152,7 @@ export const TeamChatView: React.FC<TeamChatViewProps> = ({
           <div className="p-2 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 shrink-0">
             <input
               type="text"
-              placeholder={`Message #${activeChannel?.name || 'channel'}... (Tip: Mention @NexusAI for instant sprint analysis)`}
+              placeholder={`Message #${activeChannel?.name || 'channel'}... (Tip: Mention @NexusBot for instant sprint analysis)`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
