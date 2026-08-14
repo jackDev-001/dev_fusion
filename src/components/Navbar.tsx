@@ -11,7 +11,11 @@ import {
   CheckCircle2,
   AlertTriangle,
   Users,
-  UserCheck
+  UserCheck,
+  CreditCard,
+  LogOut,
+  Shield,
+  Sparkles
 } from 'lucide-react';
 import { Organization, Workspace, User, Notification } from '../types';
 import { TEAM_MEMBERS } from '../data/mockData';
@@ -28,6 +32,8 @@ interface NavbarProps {
   onOpenCreateTask: () => void;
   onMarkNotificationRead: (id: string) => void;
   onNavigate: (view: string) => void;
+  onLogout?: () => void;
+  onSwitchUser?: (user: User) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -40,10 +46,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCopilot,
   onOpenCreateTask,
   onMarkNotificationRead,
-  onNavigate
+  onNavigate,
+  onLogout,
+  onSwitchUser
 }) => {
   const [showNotifs, setShowNotifs] = useState(false);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   // Other team members excluding the current user
@@ -75,6 +84,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="truncate max-w-[160px]">{workspace.name}</span>
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
         </div>
+
+        {/* Plan Badge / Quick Upgrade Link */}
+        <button
+          onClick={() => onNavigate('billing')}
+          className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200/80 transition-colors cursor-pointer"
+        >
+          <CreditCard className="w-3.5 h-3.5" />
+          <span>{org.plan}</span>
+        </button>
       </div>
 
       {/* Middle: Global Search Trigger (⌘K) */}
@@ -116,7 +134,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Notifications Popover Trigger */}
         <div className="relative">
           <button
-            onClick={() => setShowNotifs(!showNotifs)}
+            onClick={() => {
+              setShowNotifs(!showNotifs);
+              setShowTeamModal(false);
+              setShowUserMenu(false);
+            }}
             className="p-1.5 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors relative cursor-pointer"
             title="Notifications"
           >
@@ -142,27 +164,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   notifications.map((n) => (
                     <div
                       key={n.id}
-                      onClick={() => {
-                        onMarkNotificationRead(n.id);
-                        if (n.link) onNavigate(n.link);
-                        setShowNotifs(false);
-                      }}
-                      className={`p-3 text-xs hover:bg-slate-50 transition-colors cursor-pointer flex gap-2.5 ${
-                        !n.read ? 'bg-indigo-50/40' : ''
+                      onClick={() => onMarkNotificationRead(n.id)}
+                      className={`p-3 text-xs cursor-pointer hover:bg-slate-50 transition-colors ${
+                        !n.read ? 'bg-indigo-50/40 font-medium' : 'text-slate-600'
                       }`}
                     >
-                      {n.type === 'RISK_ALERT' ? (
-                        <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                      ) : (
-                        <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
-                      )}
-                      <div>
-                        <div className="font-bold text-slate-900">{n.title}</div>
-                        <div className="text-slate-500 text-[11px] mt-0.5">{n.message}</div>
-                        <div className="text-[10px] text-slate-400 mt-1">
-                          {new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </div>
+                      <div className="flex items-start justify-between gap-1">
+                        <span className="font-bold text-slate-900">{n.title}</span>
+                        {!n.read && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 shrink-0 mt-1" />
+                        )}
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{n.message}</p>
                     </div>
                   ))
                 )}
@@ -171,12 +184,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Team Members Avatar Stack Pill (Akshita Patel, Vinayak Gautam, Meet, Jeet) */}
+        {/* Team Members Avatar Group Popover */}
         <div className="relative">
           <button
-            onClick={() => setShowTeamModal(!showTeamModal)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100/90 hover:bg-slate-200/80 border border-slate-200/80 transition-all cursor-pointer group shadow-2xs"
-            title="Active Team Members"
+            onClick={() => {
+              setShowTeamModal(!showTeamModal);
+              setShowNotifs(false);
+              setShowUserMenu(false);
+            }}
+            className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-all cursor-pointer group"
           >
             <div className="flex -space-x-1.5 overflow-hidden">
               {otherMembers.slice(0, 4).map((member) => (
@@ -205,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>Workspace Core Team</span>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  4 Active
+                  {teamMembers.length} Active
                 </span>
               </div>
 
@@ -213,7 +229,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {otherMembers.map((m) => (
                   <div
                     key={m.id}
-                    className="p-2 rounded-xl bg-slate-50/70 hover:bg-indigo-50/50 border border-slate-200/60 transition-all flex items-center justify-between gap-2"
+                    onClick={() => {
+                      if (onSwitchUser) onSwitchUser(m);
+                      setShowTeamModal(false);
+                    }}
+                    className="p-2 rounded-xl bg-slate-50/70 hover:bg-indigo-50/80 border border-slate-200/60 transition-all flex items-center justify-between gap-2 cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className="relative">
@@ -229,7 +249,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </div>
                     </div>
                     <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-white text-indigo-700 border border-slate-200">
-                      {m.department}
+                      Switch
                     </span>
                   </div>
                 ))}
@@ -238,25 +258,88 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Primary Lead User Profile: Aniket Vadhiya */}
-        <div className="flex items-center gap-2 pl-2.5 border-l border-slate-200/80">
-          <div className="relative">
-            <UserAvatar
-              name={currentUser.name}
-              className="w-8 h-8 rounded-full text-xs font-black ring-2 ring-indigo-500 shadow-xs"
-            />
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
-          </div>
-          <div className="hidden sm:block text-left leading-tight">
-            <div className="text-xs font-black text-slate-900 flex items-center gap-1">
-              <span>{currentUser.name}</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-indigo-100 text-indigo-800 font-extrabold">
-                Owner
-              </span>
+        {/* Current User Profile & Account Menu */}
+        <div className="relative pl-2.5 border-l border-slate-200/80">
+          <button
+            onClick={() => {
+              setShowUserMenu(!showUserMenu);
+              setShowNotifs(false);
+              setShowTeamModal(false);
+            }}
+            className="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group"
+          >
+            <div className="relative">
+              <UserAvatar
+                name={currentUser.name}
+                className="w-8 h-8 rounded-full text-xs font-black ring-2 ring-indigo-500 shadow-xs"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
-            <div className="text-[10px] text-slate-500 font-semibold">{currentUser.title}</div>
-          </div>
+            <div className="hidden sm:block text-left leading-tight">
+              <div className="text-xs font-black text-slate-900 flex items-center gap-1">
+                <span>{currentUser.name}</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-indigo-100 text-indigo-800 font-extrabold">
+                  {currentUser.role}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-500 font-semibold">{currentUser.title}</div>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-colors hidden sm:block" />
+          </button>
+
+          {/* User Account Popover Menu */}
+          {showUserMenu && (
+            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-slate-200 shadow-2xl p-2.5 z-50 space-y-2">
+              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+                <div className="text-xs font-black text-slate-900">{currentUser.name}</div>
+                <div className="text-[11px] text-slate-500">{currentUser.email}</div>
+                <div className="text-[10px] text-indigo-600 font-semibold mt-1 flex items-center gap-1">
+                  <Shield className="w-3 h-3" />
+                  <span>{currentUser.department} • {currentUser.role}</span>
+                </div>
+              </div>
+
+              <div className="space-y-1 text-xs font-bold text-slate-700">
+                <button
+                  onClick={() => {
+                    onNavigate('billing');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-left cursor-pointer"
+                >
+                  <CreditCard className="w-4 h-4 text-indigo-600" />
+                  <span>Billing & Subscription</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    onNavigate('admin');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 text-left cursor-pointer"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Security & RBAC Matrix</span>
+                </button>
+              </div>
+
+              {/* Logout Option */}
+              <div className="pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    if (onLogout) onLogout();
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Log Out & Lock Session</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+
       </div>
     </header>
   );

@@ -17,6 +17,31 @@ export interface Organization {
   slug: string;
   logo: string;
   plan: 'Enterprise Tier' | 'Pro' | 'Starter';
+  billingEmail?: string;
+  seatsCount?: number;
+  renewalDate?: string;
+}
+
+export interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  date: string;
+  amount: number;
+  currency: string;
+  status: 'PAID' | 'PENDING' | 'FAILED';
+  planName: string;
+  seats: number;
+  pdfDownloadUrl?: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  type: 'CARD' | 'PAYPAL' | 'GOOGLE_PAY';
+  brand: string;
+  last4: string;
+  expMonth: string;
+  expYear: string;
+  isDefault: boolean;
 }
 
 export interface Workspace {

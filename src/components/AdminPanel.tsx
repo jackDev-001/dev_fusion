@@ -9,7 +9,8 @@ import {
   Clock,
   Layers,
   Lock,
-  ExternalLink
+  ExternalLink,
+  CreditCard
 } from 'lucide-react';
 import { Organization, User, AuditLog } from '../types';
 import { UserAvatar } from './UserAvatar';
@@ -18,9 +19,10 @@ interface AdminPanelProps {
   org: Organization;
   members: User[];
   auditLogs: AuditLog[];
+  onNavigate?: (view: string) => void;
 }
 
-export const AdminPanel: React.FC<AdminPanelProps> = ({ org, members, auditLogs }) => {
+export const AdminPanel: React.FC<AdminPanelProps> = ({ org, members, auditLogs, onNavigate }) => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -56,6 +58,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ org, members, auditLogs 
         </div>
 
         <div className="flex items-center gap-2 text-xs">
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('billing')}
+              className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <CreditCard className="w-3.5 h-3.5" />
+              <span>Billing & Subscription</span>
+            </button>
+          )}
           <span className="px-3 py-1.5 rounded-lg bg-white/10 text-emerald-300 font-bold border border-white/10 flex items-center gap-1.5">
             <Lock className="w-3.5 h-3.5" />
             <span>SOC2 Compliant Isolation</span>

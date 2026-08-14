@@ -8,6 +8,8 @@ import { MeetingsView } from './components/MeetingsView';
 import { TeamChatView } from './components/TeamChatView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { AdminPanel } from './components/AdminPanel';
+import { BillingPaymentView } from './components/BillingPaymentView';
+import { LoginPage } from './components/LoginPage';
 import { AICopilotDrawer } from './components/AICopilotDrawer';
 import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { CreateTaskModal } from './components/CreateTaskModal';
@@ -39,7 +41,9 @@ import {
   INITIAL_NOTIFICATIONS,
   INITIAL_AUDIT_LOGS,
   INITIAL_ANALYTICS,
-  INITIAL_AI_INSIGHTS
+  INITIAL_AI_INSIGHTS,
+  INITIAL_INVOICES,
+  INITIAL_PAYMENT_METHODS
 } from './data/mockData';
 
 import {
@@ -56,10 +60,29 @@ import {
   Notification,
   AuditLog,
   WorkspaceAnalytics,
-  AICopilotInsight
+  AICopilotInsight,
+  Invoice,
+  PaymentMethod
 } from './types';
 
 export default function App() {
+  // Authentication session state
+  const [currentUser, setCurrentUser] = useState<User>(() => {
+    try {
+      const saved = localStorage.getItem('nexus_auth_user');
+      return saved ? JSON.parse(saved) : CURRENT_USER;
+    } catch (e) {
+      return CURRENT_USER;
+    }
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('nexus_logged_out') !== 'true';
+    } catch (e) {
+      return true;
+    }
+  });
+
   const [currentView, setCurrentView] = useState<string>('dashboard');
 
   // State initialization with fallbacks
@@ -77,6 +100,8 @@ export default function App() {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
   const [analytics, setAnalytics] = useState<WorkspaceAnalytics>(INITIAL_ANALYTICS);
   const [aiInsights, setAiInsights] = useState<AICopilotInsight[]>(INITIAL_AI_INSIGHTS);
+  const [invoices, setInvoices] = useState<Invoice[]>(INITIAL_INVOICES);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(INITIAL_PAYMENT_METHODS);
 
   // Modals & Drawers
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
@@ -114,12 +139,102 @@ export default function App() {
         if (data.analytics) setAnalytics(data.analytics);
         if (data.aiInsights) setAiInsights(data.aiInsights);
       })
-      .catch((err) => {
+      .catch(() => {
         console.log('Running in client state mode');
       });
   }, []);
 
-  // Handlers
+  // Auth Handlers
+  const handleLoginSuccess = (user: User) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    try {
+      localStorage.setItem('nexus_auth_user', JSON.stringify(user));
+      localStorage.removeItem('nexus_logged_out');
+    } catch (e) {}
+
+    // Add audit log entry
+    setAuditLogs((prev) => [
+      {
+        id: `aud_${Date.now()}`,
+        actorName: user.name,
+        action: 'CREDENTIAL_AUTHENTICATED',
+        target: 'Enterprise Workspace Session',
+        timestamp: new Date().toLocaleTimeString(),
+        ipAddress: '192.168.1.108 (TLS 256-Bit)'
+      },
+      ...prev
+    ]);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    try {
+      localStorage.setItem('nexus_logged_out', 'true');
+    } catch (e) {}
+  };
+
+  const handleSwitchUser = (user: User) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem('nexus_auth_user', JSON.stringify(user));
+    } catch (e) {}
+    setNotifications((prev) => [
+      {
+        id: `notif_${Date.now()}`,
+        userId: user.id,
+        title: 'Active Session Switched',
+        message: `You are now interacting as ${user.name} (${user.title}).`,
+        type: 'SYSTEM',
+        read: false,
+        createdAt: 'Just now'
+      },
+      ...prev
+    ]);
+  };
+
+  // Payment & Plan Handlers
+  const handlePlanUpdated = (newPlan: 'Starter' | 'Pro' | 'Enterprise Tier', invoice: Invoice, newSeats: number) => {
+    setOrg((prev) => ({
+      ...prev,
+      plan: newPlan,
+      seatsCount: newSeats,
+      renewalDate: '2026-09-01'
+    }));
+
+    setInvoices((prev) => [invoice, ...prev]);
+
+    setAuditLogs((prev) => [
+      {
+        id: `aud_${Date.now()}`,
+        actorName: currentUser.name,
+        action: 'SUBSCRIPTION_UPGRADED',
+        target: `${newPlan} (${newSeats} Seats) - Ref: ${invoice.invoiceNumber}`,
+        timestamp: new Date().toLocaleTimeString(),
+        ipAddress: '192.168.1.108'
+      },
+      ...prev
+    ]);
+
+    setNotifications((prev) => [
+      {
+        id: `notif_${Date.now()}`,
+        userId: currentUser.id,
+        title: 'Subscription Successfully Activated',
+        message: `Your organization ${org.name} has been upgraded to ${newPlan} with ${newSeats} team licenses.`,
+        type: 'SYSTEM',
+        read: false,
+        createdAt: 'Just now'
+      },
+      ...prev
+    ]);
+  };
+
+  const handleAddPaymentMethod = (newPm: PaymentMethod) => {
+    setPaymentMethods((prev) => [newPm, ...prev]);
+  };
+
+  // Task & Content Handlers
   const handleTaskUpdate = async (id: string, updates: Partial<Task>) => {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...updates } : t)));
     try {
@@ -139,17 +254,16 @@ export default function App() {
         code: `NEX-${100 + tasks.length + 1}`,
         title: taskData.title,
         description: taskData.description || '',
-        status: 'TODO',
-        priority: taskData.priority || 'HIGH',
-        projectId: taskData.projectId || projects[0].id,
-        sprintId: sprints[0]?.id,
-        assigneeId: taskData.assigneeId || CURRENT_USER.id,
-        reporterId: CURRENT_USER.id,
-        storyPoints: taskData.storyPoints || 5,
-        estimatedHours: 8,
+        status: taskData.status || 'TODO',
+        priority: taskData.priority || 'MEDIUM',
+        projectId: taskData.projectId || projects[0]?.id || 'proj_1',
+        assigneeId: taskData.assigneeId || currentUser.id,
+        reporterId: currentUser.id,
+        storyPoints: Number(taskData.storyPoints) || 3,
+        estimatedHours: Number(taskData.estimatedHours) || 8,
         loggedHours: 0,
-        dueDate: taskData.dueDate || '2026-08-20',
-        tags: ['New'],
+        dueDate: taskData.dueDate || '2026-08-25',
+        tags: taskData.tags || ['Feature'],
         subtasks: [],
         comments: [],
         attachments: [],
@@ -161,94 +275,96 @@ export default function App() {
   };
 
   const handleAddComment = async (taskId: string, content: string) => {
-    const comment = {
-      id: `cm_${Date.now()}`,
-      authorId: CURRENT_USER.id,
-      content,
-      createdAt: new Date().toISOString()
-    };
-
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, comments: [...t.comments, comment] } : t))
-    );
-
     try {
-      await addCommentApi(taskId, content);
-    } catch (e) {}
-  };
-
-  const handleSendMessage = async (channelId: string, content: string) => {
-    const userMsg: ChatMessage = {
-      id: `msg_${Date.now()}`,
-      channelId,
-      senderId: CURRENT_USER.id,
-      content,
-      timestamp: new Date().toISOString()
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-
-    try {
-      await sendMessageApi(channelId, content);
-    } catch (e) {}
-
-    // If message mentions @NexusAI, respond with AI Copilot analysis
-    if (content.toLowerCase().includes('@nexusai')) {
-      setTimeout(() => {
-        const aiMsg: ChatMessage = {
-          id: `msg_ai_${Date.now()}`,
-          channelId,
-          senderId: 'ai_bot',
-          content: `⚡ **Nexus AI Sprint Report**:\n- **Active Velocity**: 28/42 Story Points completed\n- **Project Health**: 1 risk detected on Marcus Chen's workload.\n- Use AI Copilot drawer for automated task rebalancing!`,
-          timestamp: new Date().toISOString(),
-          isAiResponse: true
-        };
-        setMessages((prev) => [...prev, aiMsg]);
-      }, 800);
+      const comment = await addCommentApi(taskId, content);
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId
+            ? { ...t, comments: [...t.comments, comment] }
+            : t
+        )
+      );
+    } catch (e) {
+      const fallbackComment = {
+        id: `comm_${Date.now()}`,
+        authorId: currentUser.id,
+        content,
+        createdAt: 'Just now'
+      };
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId
+            ? { ...t, comments: [...t.comments, fallbackComment] }
+            : t
+        )
+      );
     }
   };
 
-  const handleApplyAiAction = async (actionType: string, payload: any) => {
+  const handleSendMessage = async (channelId: string, content: string) => {
     try {
-      const res = await applyAiActionApi(actionType, payload);
-      // Refresh workspace state
-      const updated = await fetchWorkspaceState();
-      if (updated.tasks) setTasks(updated.tasks);
-      if (updated.aiInsights) setAiInsights(updated.aiInsights);
-      if (updated.auditLogs) setAuditLogs(updated.auditLogs);
+      const msg = await sendMessageApi(channelId, content);
+      setMessages((prev) => [...prev, msg]);
     } catch (e) {
-      if (actionType === 'REASSIGN_TASK') {
+      const fallbackMsg: ChatMessage = {
+        id: `msg_${Date.now()}`,
+        channelId,
+        senderId: currentUser.id,
+        content,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages((prev) => [...prev, fallbackMsg]);
+    }
+  };
+
+  const handleApplyAiAction = async (actionPayload: any) => {
+    try {
+      const result = await applyAiActionApi(actionPayload.type || 'REASSIGN_TASK', actionPayload);
+      if (result.type === 'REASSIGN_TASK' && result.task) {
+        setTasks((prev) => prev.map((t) => (t.id === result.task.id ? result.task : t)));
+      } else if (result.type === 'EXTRACT_TASKS' && result.tasks) {
+        setTasks((prev) => [...result.tasks, ...prev]);
+      }
+    } catch (e) {
+      if (actionPayload.taskId && actionPayload.newAssigneeId) {
         setTasks((prev) =>
           prev.map((t) =>
-            t.id === payload.taskId
-              ? { ...t, assigneeId: payload.newAssigneeId, aiRiskScore: 10 }
+            t.id === actionPayload.taskId
+              ? {
+                  ...t,
+                  assigneeId: actionPayload.newAssigneeId,
+                  aiRiskScore: Math.max(10, (t.aiRiskScore || 50) - 40)
+                }
               : t
           )
         );
-        setAiInsights((prev) => prev.filter((i) => i.id !== 'ins_1'));
       }
     }
   };
 
-  const handleGenerateAiDoc = async (title: string, category: string, topic: string) => {
+  const handleGenerateAiDoc = async (title: string, category: string, prompt: string) => {
     try {
-      const newDoc = await generateAiDocApi(title, category, topic);
-      setWikiDocs((prev) => [newDoc, ...prev]);
+      const generated = await generateAiDocApi(title, category, prompt);
+      setWikiDocs((prev) => [generated, ...prev]);
     } catch (e) {
       const fallbackDoc: WikiDoc = {
         id: `doc_${Date.now()}`,
         workspaceId: workspace.id,
-        title,
-        content: `# ${title}\n\n## Overview\nAuto-generated specification for **${topic}**.\n\n### Key Principles\n- Zero-trust security\n- Multi-tenant isolation\n- Real-time audit trails`,
-        authorId: CURRENT_USER.id,
-        category: category as any,
+        title: title || 'Architecture Specification',
+        content: `# ${title || 'Architecture Specification'}\n\nAutomated technical specification generated for **${org.name}**.\n\n## 1. System Overview\nHigh-throughput distributed services with automated workload risk telemetry and fault isolation.\n\n## 2. API Contract & Data Model\n- Protocol: RESTful & WebSocket real-time event pipeline\n- Authentication: TLS 256-bit & RBAC token verification\n- Persistence: Scalable multi-tenant tenant isolation\n\n## 3. Deployment & Scalability\nZero-downtime rolling container updates with automated health monitoring.`,
+        authorId: currentUser.id,
+        category: (category as any) || 'Architecture',
         updatedAt: new Date().toISOString(),
-        tags: ['AI-Generated', category],
-        pinned: false
+        tags: ['Architecture', 'Autogenerated']
       };
       setWikiDocs((prev) => [fallbackDoc, ...prev]);
     }
   };
+
+  // If user is not authenticated or logged out, show the Credentials Login / Sign Up page
+  if (!isAuthenticated) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white">
@@ -256,7 +372,7 @@ export default function App() {
       <Navbar
         org={org}
         workspace={workspace}
-        currentUser={CURRENT_USER}
+        currentUser={currentUser}
         teamMembers={members}
         notifications={notifications}
         onOpenSearch={() => setIsSearchOpen(true)}
@@ -269,6 +385,8 @@ export default function App() {
           markNotificationReadApi(id);
         }}
         onNavigate={setCurrentView}
+        onLogout={handleLogout}
+        onSwitchUser={handleSwitchUser}
       />
 
       {/* Main Workspace App Layout */}
@@ -323,7 +441,7 @@ export default function App() {
                     workspaceId: workspace.id,
                     title: docData.title || 'Untitled',
                     content: docData.content || '',
-                    authorId: CURRENT_USER.id,
+                    authorId: currentUser.id,
                     category: docData.category || 'Engineering',
                     updatedAt: new Date().toISOString(),
                     tags: ['Doc']
@@ -348,7 +466,7 @@ export default function App() {
               channels={channels}
               messages={messages}
               members={members}
-              currentUser={CURRENT_USER}
+              currentUser={currentUser}
               onSendMessage={handleSendMessage}
             />
           )}
@@ -358,7 +476,18 @@ export default function App() {
           )}
 
           {currentView === 'admin' && (
-            <AdminPanel org={org} members={members} auditLogs={auditLogs} />
+            <AdminPanel org={org} members={members} auditLogs={auditLogs} onNavigate={setCurrentView} />
+          )}
+
+          {currentView === 'billing' && (
+            <BillingPaymentView
+              org={org}
+              members={members}
+              invoices={invoices}
+              paymentMethods={paymentMethods}
+              onPlanUpdated={handlePlanUpdated}
+              onAddPaymentMethod={handleAddPaymentMethod}
+            />
           )}
         </main>
       </div>
@@ -367,7 +496,7 @@ export default function App() {
       <AICopilotDrawer
         isOpen={isCopilotOpen}
         onClose={() => setIsCopilotOpen(false)}
-        currentUser={CURRENT_USER}
+        currentUser={currentUser}
         aiInsights={aiInsights}
         onSendPrompt={sendCopilotPromptApi}
         onApplyAiAction={handleApplyAiAction}

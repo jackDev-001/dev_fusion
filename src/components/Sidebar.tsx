@@ -7,6 +7,7 @@ import {
   MessageSquare,
   BarChart3,
   Shield,
+  CreditCard,
   Sliders,
   CheckSquare,
   Layers,
@@ -36,7 +37,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'meetings', label: 'Meetings', icon: Calendar, badge: '2' },
     { id: 'chat', label: 'Team Chat', icon: MessageSquare, badge: unreadChatCount > 0 ? `${unreadChatCount}` : null },
     { id: 'analytics', label: 'Analytics & Risk', icon: BarChart3, badge: activeRisksCount > 0 ? `${activeRisksCount} Risk` : null, badgeColor: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400' },
-    { id: 'admin', label: 'Admin & RBAC', icon: Shield, badge: null }
+    { id: 'admin', label: 'Admin & RBAC', icon: Shield, badge: null },
+    { id: 'billing', label: 'Billing & Plans', icon: CreditCard, badge: null }
   ];
 
   return (

@@ -12,7 +12,9 @@ import {
   Notification,
   AuditLog,
   WorkspaceAnalytics,
-  AICopilotInsight
+  AICopilotInsight,
+  Invoice,
+  PaymentMethod
 } from '../types';
 
 export const CURRENT_USER: User = {
@@ -75,7 +77,10 @@ export const INITIAL_ORG: Organization = {
   name: 'Acme Global Technologies',
   slug: 'acme-global',
   logo: '⚡',
-  plan: 'Enterprise Tier'
+  plan: 'Enterprise Tier',
+  billingEmail: 'billing@acme.inc',
+  seatsCount: 16,
+  renewalDate: '2026-09-01'
 };
 
 export const INITIAL_WORKSPACE: Workspace = {
@@ -521,5 +526,62 @@ export const INITIAL_AI_INSIGHTS: AICopilotInsight[] = [
     description: 'Project NEX has had 4 closed PRs since last architecture wiki update. Generate documentation update.',
     actionLabel: 'Generate Architecture Spec',
     actionPayload: { projectId: 'proj_1' }
+  }
+];
+
+export const INITIAL_INVOICES: Invoice[] = [
+  {
+    id: 'inv_104',
+    invoiceNumber: 'INV-2026-0814',
+    date: '2026-08-01',
+    amount: 1024,
+    currency: 'USD',
+    status: 'PAID',
+    planName: 'Enterprise Tier',
+    seats: 16,
+    pdfDownloadUrl: '#'
+  },
+  {
+    id: 'inv_103',
+    invoiceNumber: 'INV-2026-0701',
+    date: '2026-07-01',
+    amount: 1024,
+    currency: 'USD',
+    status: 'PAID',
+    planName: 'Enterprise Tier',
+    seats: 16,
+    pdfDownloadUrl: '#'
+  },
+  {
+    id: 'inv_102',
+    invoiceNumber: 'INV-2026-0601',
+    date: '2026-06-01',
+    amount: 896,
+    currency: 'USD',
+    status: 'PAID',
+    planName: 'Pro Tier',
+    seats: 14,
+    pdfDownloadUrl: '#'
+  }
+];
+
+export const INITIAL_PAYMENT_METHODS: PaymentMethod[] = [
+  {
+    id: 'pm_1',
+    type: 'CARD',
+    brand: 'Visa',
+    last4: '4242',
+    expMonth: '08',
+    expYear: '28',
+    isDefault: true
+  },
+  {
+    id: 'pm_2',
+    type: 'CARD',
+    brand: 'Mastercard',
+    last4: '8812',
+    expMonth: '11',
+    expYear: '27',
+    isDefault: false
   }
 ];
